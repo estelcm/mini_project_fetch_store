@@ -1,11 +1,24 @@
 <template>
-  <CategoryFilter @chosenCategory="getChosenCategoryFromChild" />
-  <button @click.prevent="getFilteredProducts">Filter</button>
+  <button @click="toggleCartVisibility">Show Cart</button>
+  <div v-if="showCart">
+    <h2>Cart:</h2>
+    <ul>
+      <li v-for="(item, index) in cart" :key="index">{{ item }}</li>
+    </ul>
+  </div>
+
+  <div class="flex justify-center gap-7 mt-3">
+    <CategoryFilter @chosenCategory="getChosenCategoryFromChild" />
+    <button @click.prevent="getFilteredProducts">Filter</button>
+  </div>
+  <button @click.prevent="toggleDisplayMode">Toggle Display</button>
+
   <div class="mx-12">
     <!-- <button type="button" @click="getProducts">show products</button> -->
   </div>
   <div
-    class="grid grid-cols-3 gap-4"
+    class="grid"
+    :class="[displayMode === 'grid4' ? 'grid-cols-4' : 'grid-cols-2']"
     id="generalProducts"
     v-if="!showCategorizedProducts"
   >
@@ -14,20 +27,39 @@
       :key="product.id"
       class="h-112 p-10 relative group"
     >
-      <img
-        :src="product.image"
-        :alt="product.category"
-        class="h-112 p-10 group-hover:hidden"
-      />
-      <div class="absolute inset-0 p-10 hidden group-hover:block">
+      <div class="image-container group-hover:hidden">
+        <img
+          :src="product.image"
+          :alt="product.category"
+          class="h-112 p-10 object-cover"
+        />
+      </div>
+
+      <div
+        class="absolute inset-0 p-10 hidden group-hover:block bg-white rounded-lg overflow-hidden"
+        id="generalProductInformation"
+        :style="
+          displayMode === 'grid4' ? 'max-height: 300px; overflow-y: auto;' : ''
+        "
+      >
         <h4 class="text-xl font-bold">{{ product.title }}</h4>
-        <p class="mt-2">{{ product.description }}</p>
+        <p
+          class="mt-2 text-xs font-light"
+          :style="
+            displayMode === 'grid4'
+              ? 'max-height: 200px; overflow-y: auto; '
+              : ''
+          "
+        >
+          {{ product.description }}
+        </p>
         <p class="mt-2 font-bold">Price: ${{ product.price }}</p>
+        <button @click="addToCart(product)">Buy</button>
       </div>
     </div>
   </div>
   <div
-    class="grid grid-cols-3 gap-4"
+    class="grid grid-cols-2 gap-4 justify-center px-28"
     id="categorizedProducts"
     v-if="showCategorizedProducts"
   >
@@ -63,6 +95,9 @@ export default {
       filteredProducts: [],
       chosenCategory: "",
       showCategorizedProducts: false,
+      displayMode: "grid4",
+      cart: [],
+      showCart: false,
     };
   },
   mounted() {
@@ -92,6 +127,15 @@ export default {
       this.showCategorizedProducts = true;
       return this.filteredProducts;
     },
+    toggleDisplayMode() {
+      this.displayMode = this.displayMode === "grid4" ? "grid2" : "grid4";
+    },
+  },
+  addToCart(product) {
+    this.cart.push(product.title);
+  },
+  toggleCartVisibility() {
+    this.showCart = !this.showCart;
   },
 };
 </script>

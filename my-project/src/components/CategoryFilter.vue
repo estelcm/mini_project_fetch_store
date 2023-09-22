@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="mt-30">
     <!-- Dropdown to select a category -->
-    <label for="text">Filter by:</label>
+    <label for="text">Categories: </label>
     <!-- aquest de sota el comento perque es en cas de ue la categoria seleccionada l'enviem a App i de app la tornem a enviar a Products -->
     <!-- <select v-model="selectedCategory" @change="sendCategory"> -->
 
