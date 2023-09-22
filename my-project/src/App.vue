@@ -1,7 +1,3 @@
-<script setup>
-import Products from "./components/Products.vue";
-</script>
-
 <template>
   <div>
     <a href="https://vitejs.dev" target="_blank">
@@ -11,10 +7,33 @@ import Products from "./components/Products.vue";
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <Products />
+
+  <Products @sendProductsToApp="getProductsFromChild" />
 </template>
 
-<style scoped>
+<script>
+import Products from "./components/Products.vue";
+import CategoryFilter from "./components/CategoryFilter.vue";
+
+export default {
+  name: "App",
+  components: { Products },
+
+  data() {
+    return {
+      products: [],
+    };
+  },
+
+  methods: {
+    getProductsFromChild(fetchedProducts) {
+      this.products = fetchedProducts;
+    },
+  },
+};
+</script>
+
+<style>
 .logo {
   height: 6em;
   padding: 1.5em;
