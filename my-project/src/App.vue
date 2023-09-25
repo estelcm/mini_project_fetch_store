@@ -7,6 +7,7 @@
         d="M0,96L80,117.3C160,139,320,181,480,176C640,171,800,117,960,96C1120,75,1280,85,1360,90.7L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
       ></path>
     </svg>
+    <Cart :productsToAddInCart="arrOfDesiredProducts" />
     <h1
       class="text-center -mt-40 font-bold text-6xl from-stone-900 text-black drop-shadow-2xl"
     >
@@ -14,25 +15,28 @@
     </h1>
   </div>
 
-  <Products @sendProductsToApp="getProductsFromChild" />
+  <!-- <Products @sendProductsToApp="getProductsFromChild" /> -->
+  <Products @ArrayOfProductsToBuy="addDesiredProducts" />
 </template>
 
 <script>
 import Products from "./components/Products.vue";
+import Cart from "./components/Cart.vue";
 
 export default {
   name: "App",
-  components: { Products },
+  components: { Products, Cart },
 
   data() {
     return {
       products: [],
+      arrOfDesiredProducts: [],
     };
   },
 
   methods: {
-    getProductsFromChild(fetchedProducts) {
-      this.products = fetchedProducts;
+    addDesiredProducts(product) {
+      this.arrOfDesiredProducts.push(product);
     },
   },
 };

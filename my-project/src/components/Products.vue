@@ -1,21 +1,36 @@
 <template>
-  <button @click="toggleCartVisibility">Show Cart</button>
+  <!-- <button @click="toggleCartVisibility">Show Cart</button>
   <div v-if="showCart">
     <h2>Cart:</h2>
     <ul>
       <li v-for="(item, index) in cart" :key="index">{{ item }}</li>
     </ul>
-  </div>
+  </div> -->
 
-  <div class="flex justify-center gap-7 mt-3">
-    <CategoryFilter @chosenCategory="getChosenCategoryFromChild" />
-    <button @click.prevent="getFilteredProducts">Filter</button>
+  <div class="flex justify-center items-center gap-7 mt-3">
+    <CategoryFilter
+      @chosenCategory="getChosenCategoryFromChild"
+      class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+    />
+    <button
+      @click.prevent="getFilteredProducts"
+      class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+    >
+      Filter
+    </button>
+    <button
+      @click.prevent="toggleDisplayMode"
+      class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+    >
+      Display
+    </button>
   </div>
-  <button @click.prevent="toggleDisplayMode">Toggle Display</button>
+  <div class="flex flex-row-reverse justify-items-end mr-20"></div>
 
   <div class="mx-12">
     <!-- <button type="button" @click="getProducts">show products</button> -->
   </div>
+  <!-- ALL CATEGORIES SECTION SHOWN BY DEFAULT -->
   <div
     class="grid"
     :class="[displayMode === 'grid4' ? 'grid-cols-4' : 'grid-cols-2']"
@@ -54,10 +69,16 @@
           {{ product.description }}
         </p>
         <p class="mt-2 font-bold">Price: ${{ product.price }}</p>
-        <button @click="addToCart(product)">Buy</button>
+        <button
+          @click="addToCart(id)"
+          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+        >
+          Buy
+        </button>
       </div>
     </div>
   </div>
+  <!-- FILTERED CATEGORIES SHOWN -->
   <div
     class="grid grid-cols-2 gap-4 justify-center px-28"
     id="categorizedProducts"
@@ -72,7 +93,7 @@
       <img
         :src="filteredProduct.image"
         :alt="filteredProduct.category"
-        class="h-112 p-10 group-hover:hidden"
+        class="h-112 p-10 group-hover:hidden image-container"
       />
 
       <div class="absolute inset-0 p-10 hidden group-hover:block">
@@ -96,8 +117,9 @@ export default {
       chosenCategory: "",
       showCategorizedProducts: false,
       displayMode: "grid4",
-      cart: [],
+      productsCart: [],
       showCart: false,
+      cartItem: "",
     };
   },
   mounted() {
@@ -119,10 +141,14 @@ export default {
     },
 
     getFilteredProducts() {
-      //console.log(this.chosenCategory);
-      this.filteredProducts = this.products.filter((product) => {
-        return product.category === this.chosenCategory;
-      });
+      if (this.chosenCategory === "all Categories") {
+        return (this.filteredProducts = this.products);
+      } else {
+        this.filteredProducts = this.products.filter((product) => {
+          return product.category === this.chosenCategory;
+        });
+      }
+
       //console.log(this.filteredProducts);
       this.showCategorizedProducts = true;
       return this.filteredProducts;
@@ -130,12 +156,29 @@ export default {
     toggleDisplayMode() {
       this.displayMode = this.displayMode === "grid4" ? "grid2" : "grid4";
     },
-  },
-  addToCart(product) {
-    this.cart.push(product.title);
-  },
-  toggleCartVisibility() {
-    this.showCart = !this.showCart;
+
+    toggleCartVisibility() {
+      this.showCart = !this.showCart;
+    },
+
+    addToCart(id) {
+      this.cartItem = this.products.find((product) => product.id == id);
+      //buscar el id i el prodcute i llavors fer un push del producte trobat al cart
+      //mes un contador q et suma els productes
+      //si dona temps mostrar la quantiat el nom del prducte i el preu
+      //dspres una soma del total
+      //el parametre id es el product.id que li he passat quan he fet click.
+      if (this.cartItem) {
+        //this.productsCart.push(cartItem);
+        console.log(this.cartItem);
+        this.$emit("sendProductToBuy", this.cartItem);
+      }
+    },
+    /*
+  getDesiredProduct(product) {
+    console.log(this.product);
+    this.$emit("sendProductToBuy", product);
+  },*/
   },
 };
 </script>
@@ -143,5 +186,11 @@ export default {
 <style>
 .read-the-docs {
   color: #888;
+}
+
+#display {
+  border-color: #900404;
+
+  padding: 3px;
 }
 </style>

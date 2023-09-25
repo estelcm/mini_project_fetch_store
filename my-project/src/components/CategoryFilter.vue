@@ -6,7 +6,7 @@
     <!-- <select v-model="selectedCategory" @change="sendCategory"> -->
 
     <select v-model="selectedCategory" @change="sendCategory">
-      <option value="">All Categories</option>
+      <option value="all Categories">All Categories</option>
       <option value="jewelery">Jewelery</option>
       <option value="electronics">Electronics</option>
       <option value="men's clothing">Men's Clothing</option>
@@ -21,7 +21,7 @@ export default {
   props: {},
   data() {
     return {
-      selectedCategory: "",
+      selectedCategory: "all Categories",
     };
   },
   computed: {},
