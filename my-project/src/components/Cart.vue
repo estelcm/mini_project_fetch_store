@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>this pretends to be a Cart</h1>
+    <!-- <h1>this pretends to be a Cart</h1> -->
     <!-- Your Cart component content -->
     <ul>
       <li v-for="(product, index) in cartItems" :key="index">

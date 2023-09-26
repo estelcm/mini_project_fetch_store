@@ -57,7 +57,7 @@
           displayMode === 'grid4' ? 'max-height: 300px; overflow-y: auto;' : ''
         "
       >
-        <h4 class="text-xl font-bold">{{ product.title }}</h4>
+        <h6 class="text-xl font-bold">{{ product.title }}</h6>
         <p
           class="mt-2 text-xs font-light"
           :style="
@@ -70,7 +70,7 @@
         </p>
         <p class="mt-2 font-bold">Price: ${{ product.price }}</p>
         <button
-          @click="addToCart(id)"
+          @click="addToCart(product.id)"
           class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
         >
           Buy
@@ -97,7 +97,7 @@
       />
 
       <div class="absolute inset-0 p-10 hidden group-hover:block">
-        <h4 class="text-xl font-bold">{{ filteredProduct.title }}</h4>
+        <h6 class="text-xl font-bold">{{ filteredProduct.title }}</h6>
         <p class="mt-2">{{ filteredProduct.description }}</p>
         <p class="mt-2 font-bold">Price: ${{ filteredProduct.price }}</p>
       </div>
@@ -160,9 +160,9 @@ export default {
     toggleCartVisibility() {
       this.showCart = !this.showCart;
     },
-
-    addToCart(id) {
-      this.cartItem = this.products.find((product) => product.id == id);
+    //you can place any name could be x, because the reference od x we have given it on the button
+    addToCart(anyNameid) {
+      this.cartItem = this.products.find((product) => product.id == anyNameid);
       //buscar el id i el prodcute i llavors fer un push del producte trobat al cart
       //mes un contador q et suma els productes
       //si dona temps mostrar la quantiat el nom del prducte i el preu
